@@ -1,0 +1,44 @@
+1. A device driver is a computer program that operates or controls a particular type of device that is attached to a computer.
+2. A driver provides a software interface to hardware devices, enabling operating systems and other computer programs to access hardware
+functions without needing to know precise details about the hardware being used.
+3. A driver communicates with the device through the computer bus or communications subsystem to which the hardware connects. 
+When a calling program invokes a routine in the driver, the driver issues commands to the device. Once the device sends data back 
+to the driver, the driver may invoke routines in the original calling program. Drivers are hardware dependent and operating-system-
+specific. They usually provide the interrupt handling required for any necessary asynchronous time-dependent hardware interface.
+4. The main purpose of device drivers is to provide abstraction by acting as a translator between a hardware device and the 
+applications or operating systems that use it.[1] Programmers can write higher-level application code independently of whatever 
+specific hardware the end-user is using. For example, a high-level application for interacting with a serial port may simply have 
+two functions for "send data" and "receive data". At a lower level,a device driver implementing these functions would communicate 
+to the particular serial port controller installed on a user's computer
+
+5.Classes of Devices and Modules --
+There are devices distinguishes between three device types like a char module,a block module, or a network module.The programmer can
+choose to build huge modules implementing different drivers in a single chunk of code.Good programmers,usually create a different 
+module for each new functionality they implement, because decomposition is a key element of scalability and extendability. 
+The three classes are the following:
+1.Character devices --> 
+ A character (char) device is one that can be accessed as a stream of bytes (like a ﬁle); a char driver is in 
+charge of implementing this behavior. Such a driver usually implements at least the open, close, read, and write system calls.The
+text console (/dev/console) and the serial ports (/dev/ttyS0) are examples of char devices, as they are well represented by the stream 
+abstraction. Char devices are accessed by means of ﬁlesystem nodes,such as /dev/tty1 and /dev/lp0.The only relevant difference 
+between a char device and a regular ﬁle is that you can always move back and forth in the regular ﬁle,whereas most char devices are 
+just data channels, which you can only access sequentially.There exist,char devices that look like data areas, and you can move back 
+and forth in them; for instance,this usually applies to frame grabbers, where the applications can access the whole acquired image 
+using mmap or lseek.
+
+2.Block devices -->
+Like char devices,block devices are accessed by ﬁlesystem nodes in the /dev directory. A block device is something that can host a
+ﬁlesystem, such as a disk. In most Unix systems, a block device can be accessed only as multiples of a block, where a block is usually
+one kilobyte of data or another power of 2. Linux allows the application to read and write a block device like a char device — it permits
+the transfer of any number of bytes at a time. As a result, block and char devices differ only in the way data is managed internally by
+the kernel, and thus in the kernel/driver software interface. Like a char device, each block device is accessed through a ﬁlesystem node
+and the difference between them is transparent to the user. A block driver offers the kernel the same interface as a char driver, as well
+as an additional block-oriented interface that is invisible to the user or applications opening the /dev entry points. That block
+interface, though, is essential to be able to mount a ﬁlesystem. 
+
+3.Network interfaces -->
+Any network transaction is made through an interface, that is, a device that is able to exchange data with other hosts. Usually,
+an interface is a hardware device, but it might also be a pure softwar e device, like the loopback interface. A network interface is 
+in charge of sending and receiving data packets, driven by the network subsystem of the kernel, without knowing how individual 
+transactions map to the actual packets being transmitted. Though both Telnet and FTP connections are str eam oriented, they transmit
+using the same device; the device doesn’t see the individual streams, but only the data packets. 
